@@ -5,7 +5,9 @@
 数据库名:tgbot  
 username: root  
 password: root  
-（数据库表tg_bot_token中存放你的机器人token）
+（数据库表tg_bot_token中存放你的机器人token）  
+数据库配置文件 https://github.com/ggwpgg1257/tgBot_joinGroup_verify/blob/main/ruoyi-admin/src/main/resources/application-druid.yml  
+项目配置文件 https://github.com/ggwpgg1257/tgBot_joinGroup_verify/blob/main/ruoyi-admin/src/main/resources/application.yml  
 ## 后台管理（用于手动封禁/解封tg用户，管理用户信息）
  地址：127.0.0.1:6070  
  账号admin123密码admin123，可以登录后，右上角手动自行修改  
