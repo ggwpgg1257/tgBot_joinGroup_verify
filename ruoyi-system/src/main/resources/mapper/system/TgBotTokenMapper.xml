@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TgBotTokenMapper">
+    
+    <resultMap type="TgBotToken" id="TgBotTokenResult">
+        <result property="token"    column="token"    />
+    </resultMap>
+
+    <sql id="selectTgBotTokenVo">
+        select token from tg_bot_token
+    </sql>
+
+    <select id="selectTgBotTokenList" parameterType="TgBotToken" resultMap="TgBotTokenResult">
+        <include refid="selectTgBotTokenVo"/>
+        <where>  
+            <if test="token != null  and token != ''"> and token = #{token}</if>
+        </where>
+    </select>
+    
+    <select id="selectTgBotTokenByToken" parameterType="String" resultMap="TgBotTokenResult">
+        <include refid="selectTgBotTokenVo"/>
+        where token = #{token}
+    </select>
+        
+    <insert id="insertTgBotToken" parameterType="TgBotToken">
+        insert into tg_bot_token
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="token != null">token,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="token != null">#{token},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTgBotToken" parameterType="TgBotToken">
+        update tg_bot_token
+        <trim prefix="SET" suffixOverrides=",">
+        </trim>
+        where token = #{token}
+    </update>
+
+    <delete id="deleteTgBotTokenByToken" parameterType="String">
+        delete from tg_bot_token where token = #{token}
+    </delete>
+
+    <delete id="deleteTgBotTokenByTokens" parameterType="String">
+        delete from tg_bot_token where token in 
+        <foreach item="token" collection="array" open="(" separator="," close=")">
+            #{token}
+        </foreach>
+    </delete>
+
+</mapper>

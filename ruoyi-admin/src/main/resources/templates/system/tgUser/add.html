@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增tg用户管理')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-tgUser-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">tg用户唯一Id：</label>
+                <div class="col-sm-8">
+                    <input name="userId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">所属会话：</label>
+                <div class="col-sm-8">
+                    <input name="chatId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">是否封禁：</label>
+                <div class="col-sm-8">
+                    <select name="ifBan" class="form-control m-b" th:with="type=${@dict.getType('tg_if_ban')}">
+                        <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">验证码：</label>
+                <div class="col-sm-8">
+                    <input name="verificationCode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">正确结果：</label>
+                <div class="col-sm-8">
+                    <input name="trueRes" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/tgUser"
+        $("#form-tgUser-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-tgUser-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

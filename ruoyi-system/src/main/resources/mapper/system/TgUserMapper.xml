@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TgUserMapper">
+    
+    <resultMap type="TgUser" id="TgUserResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="chatId"    column="chat_id"    />
+        <result property="ifBan"    column="if_ban"    />
+        <result property="verificationCode"    column="verification_code"    />
+        <result property="trueRes"    column="true_res"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTgUserVo">
+        select id, user_id, chat_id, if_ban,verification_code, true_res, create_time from tg_user
+    </sql>
+
+    <select id="selectTgUserList" parameterType="TgUser" resultMap="TgUserResult">
+        <include refid="selectTgUserVo"/>
+        <where>  
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="chatId != null  and chatId != ''"> and chat_id = #{chatId}</if>
+            <if test="ifBan != null "> and if_ban = #{ifBan}</if>
+            <if test="verificationCode != null  and verificationCode != ''"> and verification_code = #{verificationCode}</if>
+            <if test="trueRes != null  and trueRes != ''"> and true_res = #{trueRes}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+    
+    <select id="selectTgUserById" parameterType="Long" resultMap="TgUserResult">
+        <include refid="selectTgUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTgUser" parameterType="TgUser" useGeneratedKeys="true" keyProperty="id">
+        insert into tg_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="chatId != null">chat_id,</if>
+            <if test="ifBan != null">if_ban,</if>
+            <if test="verificationCode != null">verification_code,</if>
+            <if test="trueRes != null">true_res,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="chatId != null">#{chatId},</if>
+            <if test="ifBan != null">#{ifBan},</if>
+            <if test="verificationCode != null">#{verificationCode},</if>
+            <if test="trueRes != null">#{trueRes},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTgUser" parameterType="TgUser">
+        update tg_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="chatId != null">chat_id = #{chatId},</if>
+            <if test="ifBan != null">if_ban = #{ifBan},</if>
+            <if test="verificationCode != null">verification_code = #{verificationCode},</if>
+            <if test="trueRes != null">true_res = #{trueRes},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTgUserById" parameterType="Long">
+        delete from tg_user where id = #{id}
+    </delete>
+
+    <delete id="deleteTgUserByIds" parameterType="String">
+        delete from tg_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TgUserMessageMapper">
+    
+    <resultMap type="TgUserMessage" id="TgUserMessageResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="messageId"    column="message_id"    />
+        <result property="chatId"    column="chat_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="messageContent"    column="message_content"    />
+    </resultMap>
+
+    <sql id="selectTgUserMessageVo">
+        select id, user_id, message_id,chat_id,message_content,user_name,nick_name from tg_user_message
+    </sql>
+
+    <select id="selectTgUserMessageList" parameterType="TgUserMessage" resultMap="TgUserMessageResult">
+        <include refid="selectTgUserMessageVo"/>
+        <where>  
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="messageId != null "> and message_id = #{messageId}</if>
+            <if test="chatId != null and userName != ''"> and chat_id = #{chatId}</if>
+            <if test="userName != null and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="nickName != null and nickName != ''"> and nick_name like concat('%', #{nickName}, '%')</if>
+            <if test="messageContent != null and messageContent != ''"> and message_content like concat('%', #{messageContent}, '%')</if>
+        </where>
+          ORDER BY id DESC
+    </select>
+    
+    <select id="selectTgUserMessageById" parameterType="Long" resultMap="TgUserMessageResult">
+        <include refid="selectTgUserMessageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTgUserMessage" parameterType="TgUserMessage" useGeneratedKeys="true" keyProperty="id">
+        insert into tg_user_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="messageId != null">message_id,</if>
+            <if test="chatId != null">chat_id,</if>
+            <if test="messageContent != null">message_content,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="nickName != null">nick_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="messageId != null">#{messageId},</if>
+            <if test="chatId != null">#{chatId},</if>
+            <if test="messageContent != null">#{messageContent},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="nickName != null">#{nickName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTgUserMessage" parameterType="TgUserMessage">
+        update tg_user_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="messageId != null">message_id = #{messageId},</if>
+            <if test="chatId != null">chat_id = #{chatId},</if>
+            <if test="messageContent != null">message_content = #{messageContent},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="nickName != null">nick_name = #{nickName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTgUserMessageById" parameterType="Long">
+        delete from tg_user_message where id = #{id}
+    </delete>
+
+    <delete id="deleteTgUserMessageByIds" parameterType="String">
+        delete from tg_user_message where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
